@@ -104,26 +104,26 @@ for obj in objects:
     print " added cert", key
 
 def obj_to_filename(obj):
-    label = obj['CKA_LABEL'][1:-1]
-    label = label.replace('/', '_')\
-        .replace(' ', '_')\
-        .replace('(', '=')\
-        .replace(')', '=')\
-        .replace(',', '_')
-    label = re.sub(r'\\x[0-9a-fA-F]{2}', lambda m:chr(int(m.group(0)[2:], 16)), label)
-    serial = printable_serial(obj)
-    return label + ":" + serial
+  label = obj['CKA_LABEL'][1:-1]
+  label = label.replace('/', '_')\
+      .replace(' ', '_')\
+      .replace('(', '=')\
+      .replace(')', '=')\
+      .replace(',', '_')
+  label = re.sub(r'\\x[0-9a-fA-F]{2}', lambda m:chr(int(m.group(0)[2:], 16)), label)
+  serial = printable_serial(obj)
+  return f"{label}:{serial}"
 
 def write_cert_ext_to_file(f, oid, value, public_key):
-    f.write("[p11-kit-object-v1]\n")
-    f.write("label: ");
-    f.write(tobj['CKA_LABEL'])
-    f.write("\n")
-    f.write("class: x-certificate-extension\n");
-    f.write("object-id: " + oid + "\n")
-    f.write("value: \"" + value + "\"\n")
-    f.write("modifiable: false\n");
-    f.write(public_key)
+  f.write("[p11-kit-object-v1]\n")
+  f.write("label: ");
+  f.write(tobj['CKA_LABEL'])
+  f.write("\n")
+  f.write("class: x-certificate-extension\n");
+  f.write(f"object-id: {oid}" + "\n")
+  f.write("value: \"" + value + "\"\n")
+  f.write("modifiable: false\n");
+  f.write(public_key)
 
 trust_types = {
   "CKA_TRUST_DIGITAL_SIGNATURE": "digital-signature",
